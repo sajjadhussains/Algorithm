@@ -1,0 +1,15 @@
+Pseudocode of bfs
+=======================
+Input->Connected Graph and Source
+Output->Traverse all the nodes and print the traversal order
+
+Bfs(graph,source):
+    __Initialize an array called "visited" and an empty queue "q"
+    __mark visited[source]=1 and q.push(source)
+    __while the queue is not empty
+        _head=queue.front()
+        _q.pop()
+        _print the node "head"
+        for all adjacent nodes of "head"
+            _if visited[adj_node]==0:
+                _visited[adj_node]=1 and q.push(adj_node)
