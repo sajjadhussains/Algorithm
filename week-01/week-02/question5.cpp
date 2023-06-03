@@ -18,8 +18,6 @@ int main()
 {
     string result=int_to_binary(10);
     cout<<result<<endl;
-    cout<<"hello world"<<endl;
-
     return 0;
 
 }
