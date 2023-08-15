@@ -46,15 +46,11 @@ int main()
 
     // top_sort_bfs(1);
     top_sort_bfs();
-	vector<int>top_sort;
     while(!s.empty()){
-		top_sort.push_back(s.top());
+        cout<<s.top()<<" ";
         s.pop();
     }
-    for(int i=0;i<top_sort.size();i++){
-		cout<<top_sort[i]<<" ";
-	}
-	cout<<endl;
+    cout<<endl;
     
     return 0;
 }
