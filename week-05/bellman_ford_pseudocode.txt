@@ -1,0 +1,21 @@
+/*  Bellman ford Algorithm pseudocode*/
+-input:A weighted graph and src node (with no negetive cycle)
+-output:distance of all nodes from the src node
+n=number of vertex
+m=number of edges
+
+-initialize a distance array "d" with all vertex to infinity
+-d[src]=0->o(1)
+-for(i=1 to i=n-1)->O(n)
+    for all edge e(u,v,w):->O(m)=>O(n*m)
+        if d[u]+w<d[v]:->O(1)
+            d[v]=d[u]+weighted->O(1)
+
+print the distance array "d"
+
+Time complexity:O(1)+O(n)+O(n*m)+O(1)+O(1)
+                =O(n*m)
+                =O(|V|*|E|)
+                =O(n^3)
+                
+Space complexity:O(n)

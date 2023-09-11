@@ -1,62 +1,86 @@
+// problem-link:https://codeforces.com/problemset/problem/20/C
+
+//input->weighted graph and src
+//output -> distance of all nodes from the source
+
 #include<bits/stdc++.h>
- 
+
 using namespace std;
-const int N=1e5+5;
-vector<int>adj_list[N];
-int visited[N],level[N],parent[N];
-bool found = false;
- 
-void dfs(int node, int parent_node) {
-    visited[node] = 1;
-    parent[node] = parent_node;
- 
-    for(int adj_node : adj_list[node]) {
-        if(!visited[adj_node]) {
-            level[adj_node] = level[node] + 1;
-            dfs(adj_node, node);
-            if(found) return;
-        } else if(adj_node != parent_node) {
-            // We found a cycle, which indicates a path from source to destination
-            found = true;
-            vector<int> path;
-            path.push_back(adj_node);
-            int curr = node;
-            while(curr != adj_node) {
-                path.push_back(curr);
-                curr = parent[curr];
+const int N = 505;
+const int INF = 16005;
+int nodes,edges;
+
+vector<pair<int,int>>adj_list[N];
+int visited[N],parent[N];
+int d[N],max_cost[N];
+
+void dijkstra(int src){
+    for(int i=0;i<=nodes;i++){
+        d[i]=INF;
+        max_cost[i]=0;
+    }
+    d[src]=0;
+    priority_queue< pair<long long,int> >pq;
+    pq.push({0,src});
+
+    while(!pq.empty()){
+        pair<int,int>head=pq.top();
+        pq.pop();
+        int selected_node = head.second;
+
+        if(visited[selected_node]==1){
+            continue;
+        }
+        visited[selected_node]=1;
+
+        for(auto adj_entry:adj_list[selected_node]){
+            int adj_node = adj_entry.first;
+            int edge_cost = adj_entry.second;
+
+            if(d[selected_node]+edge_cost < d[adj_node]){
+                d[adj_node] = d[selected_node] + edge_cost;
+                parent[adj_node]=selected_node;
+                pq.push({-d[adj_node],adj_node});
             }
-            path.push_back(adj_node);
- 
-            cout << level[dst_node] << endl;
-            reverse(path.begin(), path.end());
-            for(int p : path) {
-                cout << p << " ";
-            }
-            cout << endl;
- 
-            return;
         }
     }
 }
- 
-int main() {
-    int n, m;
-    cin >> n >> m;
- 
-    for(int i = 0; i < m; i++) {
-        int u, v;
-        cin >> u >> v;
-        adj_list[u].push_back(v);
-        adj_list[v].push_back(u);
+int main()
+{
+    cin>>nodes>>edges;
+    for(int i=0;i<edges;i++){
+        int u,v,w;
+        cin>>u>>v>>w;
+        adj_list[u].push_back({v,w});
+        adj_list[v].push_back({u,w});
     }
-    
-    int src_node = 1, dst_node = n;
-    level[src_node] = 1;
-    dfs(src_node, -1);
-    
-    if(!found) {
-        cout << "IMPOSSIBLE" << endl;
+    int src=1;
+
+    dijkstra(src);
+    if(d[nodes]==0){
+        cout<<-1<<endl;
+        return 0;
     }
+    int current_node = nodes;
+    vector<int>path;
+
+    while(true){
+        path.push_back(current_node);
+        if(current_node==src){
+            break;
+        }
+        current_node=parent[current_node];
+    }
+    reverse(path.begin(),path.end());
     
+    for(auto node:path){
+        cout<<node<<" ";
+    }
+    cout<<endl;
+
+    for(int i=1;i<=nodes;i++){
+        cout<<"("<<d[i]<<","<<i<<"),";
+    }
+    cout<<endl;
     return 0;
 }

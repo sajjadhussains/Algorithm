@@ -50,7 +50,7 @@ int main()
     dijkstra(src);
 
     for(int i=1;i<=nodes;i++){
-        cout<<"("<<i<<","<<d[i]<<"),";
+        cout<<d[i]<<" ";
     }
     cout<<endl;
     return 0;

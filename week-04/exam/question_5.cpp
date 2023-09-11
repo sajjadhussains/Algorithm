@@ -1,40 +1,72 @@
-// problem-link:https://www.spoj.com/problems/ABCPATH/
-
-#include<bits/stdc++.h>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-int main()
-{
-    while(true){
-        int h,w;
-        cin>>h>>w;
-        int maze[h][50];
-        if(h==0 && w==0){
+const int dx[] = { -1, -1, -1, 0, 0, 1, 1, 1 };
+const int dy[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
+
+int H, W;
+char grid[55][55];
+int memo[55][55];
+
+bool isValid(int x, int y) {
+    return (x >= 0 && x < H && y >= 0 && y < W);
+}
+
+int dfs(int x, int y) {
+    if (memo[x][y] != -1) {
+        return memo[x][y];
+    }
+
+    int max_length = 0;
+
+    for (int i = 0; i < 8; i++) {
+        int new_x = x + dx[i];
+        int new_y = y + dy[i];
+
+        if (isValid(new_x, new_y) && grid[new_x][new_y] == grid[x][y] + 1) {
+            int length = 1 + dfs(new_x, new_y);
+            max_length = max(max_length, length);
+        }
+    }
+
+    return memo[x][y] = max_length;
+}
+
+int findLongestPath() {
+    int max_length = 0;
+
+    for (int i = 0; i < H; i++) {
+        for (int j = 0; j < W; j++) {
+            if (grid[i][j] == 'A') {
+                int length = 1 + dfs(i, j);
+                max_length = max(max_length, length);
+            }
+        }
+    }
+
+    return max_length;
+}
+
+int main() {
+    int case_num = 1;
+
+    while (cin >> H >> W) {
+        if (H == 0 && W == 0) {
             break;
         }
-        
 
-        for(int i=0;i<h;i++){
-            string input;
-            cin>>input;
+        memset(memo, -1, sizeof(memo));
 
-            for(int j=0;j<w;j++){
-                if(input[j]=='A'){
-                    cout<<input[j]<<" ";
-                    maze[i][j]=1;
-                }
-                maze[i][j]=-1;
+        for (int i = 0; i < H; i++) {
+            for (int j = 0; j < W; j++) {
+                cin >> grid[i][j];
             }
         }
 
-        for(int i=0;i<h;i++){
-            for(int j=0;j<w;j++){
-                cout<<maze[i][j]<<"\t";
-            }
-            cout<<endl;
-        }
+        int result = findLongestPath();
 
+        cout << "Case " << case_num << ": " << result << endl;
+        case_num++;
     }
 
     return 0;
