@@ -2,36 +2,35 @@
 
 using namespace std;
 
-int n;
+int n,m;
 const long long INF = 100000;
 const int N = 1e5 + 10;
-long long d[N];
+long long dist[N];
 int parent[N];
-vector<pair<int, int>> adj_list[N];
+vector<pair<int, int>> g[N];
 int last_updated_node, start_node;
 
 bool bellman_ford()
 {
-    for (int i = 0; i < n; i++)
-    {
-        d[i] = INF;
-    }
-    bool negetive_cycle = false;
+    for(int i=0;i<n;i++)
+        dist[i]=INF;
+
+    bool negetive_cycle=false;
 
     for (int i = 1; i <= n; i++)
     {
         for (int node = 1; node <= n; node++)
         {
-            for (pair<int, int> adj_node : adj_list[node])
+            for (auto adj: g[node])
             {
                 int u = node;
-                int v = adj_node.first;
-                int w = adj_node.second;
-                if (d[u] + w < d[v])
+                int v = adj.first;
+                int w = adj.second;
+                if (dist[u] + w < dist[v])
                 {
-                    d[v] = d[u] + w;
+                    dist[v] = dist[u] + w;
                     parent[v] = u;
-                    if (i = n)
+                    if (i == n)
                     {
                         negetive_cycle = true;
                         last_updated_node = v;
@@ -56,7 +55,7 @@ int main()
                 {
                     continue;
                 }
-            adj_list[i + 1].push_back({j + 1, weight});
+            g[i + 1].push_back({j+1,weight});
         }
     }
 
@@ -93,9 +92,9 @@ int main()
 
         reverse(cycle.begin(), cycle.end());
         cout << cycle.size() << endl;
-        for (auto node : cycle)
+        for (auto v : cycle)
         {
-            cout << node << " ";
+            cout << v << " ";
         }
         cout << endl;
     }
