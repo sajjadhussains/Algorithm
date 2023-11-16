@@ -6,7 +6,7 @@ int fibo(int n){
         return 0;
     }
     for(int i=1;i<=3;i++){
-        cout<<fibo(n-1);
+        fibo(n-1);
         cout<<i<<endl;
     }
 }
