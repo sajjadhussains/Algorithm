@@ -1,5 +1,10 @@
 //problem_link:https://leetcode.com/problems/unique-paths/
 
+/*
+    -state:f(n,m)-->number of unique paths from (0,0) to (n,m)
+    -recurrance:f(n,m)->f(n-1,m)+f(n,m-1)
+    -base case:f(0,0)=1
+*/
 #include<bits/stdc++.h>
 
 using namespace std;
